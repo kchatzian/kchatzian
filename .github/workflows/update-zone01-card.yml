@@ -2,9 +2,12 @@ name: Update Zone01 Progress Card
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "17 6 * * *"
   push:
     paths:
       - data/zone01.json
+      - scripts/fetch_zone01_progress.py
       - scripts/generate_zone01_card.py
 
 permissions:
@@ -13,10 +16,16 @@ permissions:
 jobs:
   update-card:
     runs-on: ubuntu-latest
+    env:
+      ZONE01_JWT: ${{ secrets.ZONE01_JWT }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Fetch latest Zone01 progress
+        if: ${{ env.ZONE01_JWT != '' }}
+        run: python3 scripts/fetch_zone01_progress.py
 
       - name: Generate card
         run: python3 scripts/generate_zone01_card.py
@@ -25,4 +34,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Update Zone01 progress card
-          file_pattern: assets/zone01-progress.svg
+          file_pattern: data/zone01.json assets/zone01-progress.svg
