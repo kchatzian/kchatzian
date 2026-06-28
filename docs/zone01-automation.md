@@ -24,6 +24,14 @@ For scheduled updates, add this repository secret:
 ZONE01_JWT
 ```
 
+For long-term automatic updates, add this repository secret too:
+
+```text
+PROFILE_REPO_PAT
+```
+
+`PROFILE_REPO_PAT` allows the workflow to rotate `ZONE01_JWT` after every successful token refresh.
+
 The workflow `.github/workflows/update-zone01-card.yml` runs every day and regenerates the card.
 
 Do not commit tokens, cookies, passwords, or browser storage files.

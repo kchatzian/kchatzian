@@ -25,10 +25,18 @@ jobs:
 
       - name: Fetch latest Zone01 progress
         if: ${{ env.ZONE01_JWT != '' }}
-        run: python3 scripts/fetch_zone01_progress.py
+        run: python3 scripts/fetch_zone01_progress.py --refreshed-token-path "$RUNNER_TEMP/zone01_jwt"
 
       - name: Generate card
         run: python3 scripts/generate_zone01_card.py
+
+      - name: Rotate Zone01 token secret
+        env:
+          GH_TOKEN: ${{ secrets.PROFILE_REPO_PAT }}
+        run: |
+          if [ -n "${GH_TOKEN:-}" ] && [ -s "$RUNNER_TEMP/zone01_jwt" ]; then
+            gh secret set ZONE01_JWT --repo kchatzian/kchatzian < "$RUNNER_TEMP/zone01_jwt"
+          fi
 
       - name: Commit generated SVG
         uses: stefanzweifel/git-auto-commit-action@v5

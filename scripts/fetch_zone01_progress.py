@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import base64
+import argparse
 import json
 import os
 import shutil
@@ -230,7 +231,19 @@ def format_xp(value: float) -> str:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--refreshed-token-path",
+        help="Write the refreshed Zone01 JWT to this path for secret rotation.",
+    )
+    args = parser.parse_args()
+
     token = refresh_token(get_token())
+    if args.refreshed_token_path:
+        token_path = Path(args.refreshed_token_path)
+        token_path.write_text(token, encoding="utf-8")
+        token_path.chmod(0o600)
+
     payload = decode_jwt_payload(token)
     user_id = int(payload["sub"])
 
