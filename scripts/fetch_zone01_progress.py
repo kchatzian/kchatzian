@@ -12,6 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "zone01.json"
 GRAPHQL_URL = "https://platform.zone01.gr/api/graphql-engine/v1/graphql"
+REFRESH_URL = "https://platform.zone01.gr/api/auth/refresh"
 DEFAULT_FIREFOX_STORAGE = (
     Path.home()
     / "snap/firefox/common/.mozilla/firefox/zcaxwznc.default/storage/default/"
@@ -103,6 +104,25 @@ def read_firefox_token() -> str:
 def get_token() -> str:
     token = os.environ.get("ZONE01_JWT", "").strip()
     return token or read_firefox_token()
+
+
+def refresh_token(token: str) -> str:
+    request = urllib.request.Request(
+        REFRESH_URL,
+        headers={"x-jwt-token": token},
+        method="GET",
+    )
+
+    try:
+        with urllib.request.urlopen(request, timeout=30) as response:
+            refreshed = response.read().decode("utf-8").strip()
+    except urllib.error.HTTPError:
+        return token
+
+    if refreshed.startswith('"') and refreshed.endswith('"'):
+        refreshed = json.loads(refreshed)
+
+    return refreshed or token
 
 
 def graphql(token: str, query: str, variables: dict) -> dict:
@@ -210,7 +230,7 @@ def format_xp(value: float) -> str:
 
 
 def main() -> None:
-    token = get_token()
+    token = refresh_token(get_token())
     payload = decode_jwt_payload(token)
     user_id = int(payload["sub"])
 
