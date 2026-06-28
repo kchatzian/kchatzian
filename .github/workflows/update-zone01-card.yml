@@ -1,0 +1,28 @@
+name: Update Zone01 Progress Card
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - data/zone01.json
+      - scripts/generate_zone01_card.py
+
+permissions:
+  contents: write
+
+jobs:
+  update-card:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate card
+        run: python3 scripts/generate_zone01_card.py
+
+      - name: Commit generated SVG
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Update Zone01 progress card
+          file_pattern: assets/zone01-progress.svg
