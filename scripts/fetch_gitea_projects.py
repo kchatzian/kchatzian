@@ -11,7 +11,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "portfolio-projects.json"
-GITEA_CACHE_PATH = ROOT / "data" / "gitea-repos.local.json"
 
 
 def request_json(base_url, path, token, query=None):
@@ -158,21 +157,6 @@ def merge_repo(existing, repo, preserve_manual_url=False):
     return merged
 
 
-def cache_repo(repo):
-    return {
-        "slug": repo_slug(repo),
-        "name": repo["name"],
-        "full_name": repo["full_name"],
-        "owner": repo["owner"]["login"],
-        "repo_url": public_repo_url(repo),
-        "description": repo.get("description") or "",
-        "language": repo.get("language") or "",
-        "private": repo.get("private", False),
-        "fork": repo.get("fork", False),
-        "updated_at": repo.get("updated_at", ""),
-    }
-
-
 def collect_repos(base_url, username, token):
     repos = []
     if token:
@@ -224,23 +208,7 @@ def main():
 
     for repo in unique_repos.values():
         slug = match_slug(by_slug, repo)
-        if slug not in by_slug:
-            continue
         by_slug[slug] = merge_repo(by_slug.get(slug, {}), repo)
-
-    cache = {
-        "updated_at": datetime.now(timezone.utc).isoformat(),
-        "base_url": base_url,
-        "username": args.username,
-        "repos": sorted(
-            (cache_repo(repo) for repo in unique_repos.values()),
-            key=lambda repo: (repo["owner"].lower(), repo["name"].lower()),
-        ),
-    }
-    GITEA_CACHE_PATH.write_text(
-        json.dumps(cache, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
 
     data["projects"] = sorted(by_slug.values(), key=lambda project: project.get("priority", 999))
     data["updated_at"] = datetime.now(timezone.utc).date().isoformat()
