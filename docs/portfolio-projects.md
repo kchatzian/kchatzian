@@ -1,29 +1,80 @@
-# Portfolio Project Queue
+# Portfolio Project System
 
-Use this as the manual review list before adding school projects to the public GitHub profile.
+The public profile should show selected engineering signal, not every completed school step.
+Use `data/portfolio-projects.json` as the source of truth and regenerate the README section with:
 
-## First Candidates
+```bash
+python3 scripts/generate_portfolio_section.py
+```
 
-| Project | Portfolio Decision | Notes |
+## Current Profile Selection
+
+| Project | Decision | Why |
 | --- | --- | --- |
-| groupie-tracker | First public candidate | Present as one complete Go web project with search, filters, geolocation, and visualizations as features. |
-| net-cat | Strong systems candidate | Good for TCP, concurrency, terminal workflows, and server/client behavior. |
-| ascii-art-web-dockerize | Good web/container candidate | Good for Go web work plus Docker. |
+| groupie-tracker | Featured | Best complete Go web project: search, filters, geolocation, visualizations, and data handling. |
+| net-cat | Featured | Strong systems/backend signal: TCP, concurrency, server/client behavior, terminal workflows. |
+| lem-in | Featured | Strong algorithm signal: graph parsing, pathfinding, optimization, and movement scheduling. |
+| push-swap | Selected | Good algorithm project after README polish and examples. |
+| tetris-optimizer | Selected | Good backtracking/optimization project after README polish. |
+| ascii-art-web-dockerize | Selected | Good supporting evidence for Go web and Docker basics. |
 
-## Later Candidates
+## Future Featured Project
 
-| Project | Portfolio Decision | Notes |
-| --- | --- | --- |
-| tetris-optimizer | Add after README polish | Good algorithm/backtracking project. |
-| push-swap | Add after README polish | Good algorithmic project, but needs clear explanation and examples. |
+`forum` should become the strongest portfolio project when it is stable, documented, and safe to publish.
+Until then, keep it out of the profile and CV.
 
 ## Keep Private Or Low Priority
 
 Small exercises, prompt/markdown projects, early CSS exercises, and duplicate school steps should stay out of the main portfolio unless there is a specific reason to show them.
 
-## Rule
+## Gitea Import
 
-Only add a project to the public profile when it has:
+The Gitea importer can fill repository URLs and metadata without overwriting the curated decisions. With `GITEA_TOKEN`, it also asks Gitea for repositories the authenticated user can access, which is the path for team projects owned by collaborators:
+
+```bash
+GITEA_BASE_URL="https://gitea.example.com" \
+GITEA_USERNAME="kchatzian" \
+GITEA_TOKEN="..." \
+python3 scripts/fetch_gitea_projects.py
+```
+
+Gitea exposes its REST API under `/api/v1`, with Swagger/OpenAPI documentation available on the instance at `/api/swagger` or `/swagger.v1.json`.
+
+## Dashboard Plan
+
+Start the local dashboard with:
+
+```bash
+python3 scripts/portfolio_dashboard.py
+```
+
+Then open:
+
+```text
+http://127.0.0.1:8765
+```
+
+The dashboard reads `data/portfolio-projects.json` and exposes these controls:
+
+| Control | Meaning |
+| --- | --- |
+| `show_on_profile` | Include in the GitHub profile README generated section. |
+| `show_on_cv` | Include in a future generated CV project section. |
+| `status` | `ready`, `polish`, `review`, or `not-ready`. |
+| `visibility` | `featured`, `selected`, `candidate`, or `future-featured`. |
+| `priority` | Sort order in public outputs. |
+
+After editing the dashboard, use `Save + Regenerate` to update both the JSON file and the README generated section. The underlying command is:
+
+```bash
+python3 scripts/generate_portfolio_section.py
+```
+
+Later it can also generate a CV section from the `show_on_cv` projects.
+
+## Publishing Rule
+
+Only feature a project when it has:
 
 - A clean README
 - Clear run instructions

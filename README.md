@@ -128,6 +128,21 @@ mindmap
   <img src="https://github-readme-activity-graph.vercel.app/graph?username=kchatzian&theme=tokyo-night&hide_border=true&area=true" alt="Contribution activity graph" />
 </div>
 
+<!-- portfolio-projects:start -->
+## Selected Projects
+
+| Project | Focus | Why it matters |
+| --- | --- | --- |
+| groupie-tracker | Go Web App | A Go web application that explores artist data with search, filters, geolocation, and visualizations. |
+| net-cat | Networking | A TCP chat/server project focused on client connections, concurrency, and terminal-based workflows. |
+| lem-in | Algorithms | A graph/pathfinding project that routes ants through rooms while optimizing movement over available paths. |
+| push-swap | Algorithms | A constrained sorting project focused on minimizing operations with two stacks. |
+| tetris-optimizer | Backtracking | A placement optimizer that packs tetromino-style pieces into the smallest valid square. |
+| ascii-art-web-dockerize | Web + Docker | A containerized Go web project that serves ASCII-art generation through a browser interface. |
+
+These are curated from Zone01 work and selected for portfolio signal, not project count.
+<!-- portfolio-projects:end -->
+
 ## Portfolio Direction
 
 | Type | Goal |
