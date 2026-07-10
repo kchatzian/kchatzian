@@ -10,6 +10,10 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "portfolio-projects.json"
 GENERATOR = ROOT / "scripts" / "generate_portfolio_section.py"
 GITEA_IMPORTER = ROOT / "scripts" / "fetch_gitea_projects.py"
+PUBLISH_PATHS = [
+    "README.md",
+    "data/portfolio-projects.json",
+]
 
 HTML = """<!doctype html>
 <html lang="en">
@@ -179,6 +183,7 @@ HTML = """<!doctype html>
       <button class="secondary" id="reload">Reload</button>
       <button class="secondary" id="generate">Regenerate README</button>
       <button class="primary" id="save">Save + Regenerate</button>
+      <button class="primary" id="publish">Publish to GitHub</button>
     </div>
   </header>
   <main>
@@ -186,7 +191,7 @@ HTML = """<!doctype html>
       <span class="badge">Source: data/portfolio-projects.json</span>
       <div class="status" id="status"></div>
     </div>
-    <p class="hint">Save + Regenerate updates local files. To publish profile changes on GitHub, commit and push the modified README/data files.</p>
+    <p class="hint">Save + Regenerate updates local files. Publish to GitHub saves, regenerates, commits, and pushes the profile changes.</p>
     <form class="importer" id="gitea-importer">
       <label>Gitea URL
         <input id="gitea-url" type="text" placeholder="https://git.example.com" value="__GITEA_BASE_URL__" />
@@ -340,6 +345,26 @@ HTML = """<!doctype html>
       setStatus(res.ok ? result.message : result.error);
     }
 
+    async function publish() {
+      if (!confirm("Publish portfolio changes to GitHub now?")) {
+        return;
+      }
+      setStatus("Publishing to GitHub...");
+      const res = await fetch("/api/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(state)
+      });
+      const result = await res.json();
+      if (!res.ok) {
+        setStatus(result.error || "Publish failed");
+        return;
+      }
+      state = result.data;
+      render();
+      setStatus(result.message);
+    }
+
     async function importGitea(event) {
       event.preventDefault();
       setStatus("Importing from Gitea...");
@@ -365,6 +390,7 @@ HTML = """<!doctype html>
     document.querySelector("#reload").addEventListener("click", load);
     document.querySelector("#save").addEventListener("click", () => save(true));
     document.querySelector("#generate").addEventListener("click", generate);
+    document.querySelector("#publish").addEventListener("click", publish);
     document.querySelector("#gitea-importer").addEventListener("submit", importGitea);
     load();
   </script>
@@ -383,6 +409,41 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
+
+    def run_command(self, command):
+        return subprocess.run(
+            command,
+            check=True,
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+        )
+
+    def save_projects(self):
+        length = int(self.headers.get("Content-Length", "0"))
+        payload = json.loads(self.rfile.read(length))
+        payload["updated_at"] = datetime.now(timezone.utc).date().isoformat()
+        DATA_PATH.write_text(
+            json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+        subprocess.run(["python3", str(GENERATOR)], check=True, cwd=ROOT)
+        return payload
+
+    def publish_projects(self):
+        data = self.save_projects()
+        self.run_command(["git", "add", *PUBLISH_PATHS])
+        diff = subprocess.run(
+            ["git", "diff", "--cached", "--quiet", "--", *PUBLISH_PATHS],
+            cwd=ROOT,
+        )
+        if diff.returncode == 0:
+            return "No portfolio changes to publish.", data
+
+        self.run_command(["git", "commit", "-m", "Update portfolio projects"])
+        self.run_command(["git", "push", "origin", "main"])
+        sha = self.run_command(["git", "rev-parse", "--short", "HEAD"]).stdout.strip()
+        return f"Published portfolio changes to GitHub at {sha}.", data
 
     def do_GET(self):
         if self.path == "/" or self.path == "/dashboard":
@@ -417,16 +478,27 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         if self.path.startswith("/api/projects"):
             try:
-                length = int(self.headers.get("Content-Length", "0"))
-                payload = json.loads(self.rfile.read(length))
-                payload["updated_at"] = datetime.now(timezone.utc).date().isoformat()
-                DATA_PATH.write_text(
-                    json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
-                    encoding="utf-8",
-                )
                 if "regenerate=1" in self.path:
-                    subprocess.run(["python3", str(GENERATOR)], check=True, cwd=ROOT)
+                    payload = self.save_projects()
+                else:
+                    length = int(self.headers.get("Content-Length", "0"))
+                    payload = json.loads(self.rfile.read(length))
+                    payload["updated_at"] = datetime.now(timezone.utc).date().isoformat()
+                    DATA_PATH.write_text(
+                        json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
+                        encoding="utf-8",
+                    )
                 self.send_json(200, {"message": "Saved", "data": payload})
+            except Exception as error:
+                self.send_json(500, {"error": str(error)})
+            return
+
+        if self.path == "/api/publish":
+            try:
+                message, data = self.publish_projects()
+                self.send_json(200, {"message": message, "data": data})
+            except subprocess.CalledProcessError as error:
+                self.send_json(500, {"error": error.stderr.strip() or error.stdout.strip() or str(error)})
             except Exception as error:
                 self.send_json(500, {"error": str(error)})
             return

@@ -71,7 +71,7 @@ Use `Import from Gitea` to fill repository URLs automatically from the Gitea pro
 
 For Zone01 Gitea, the token is required even when the profile is visible in the browser. Create it from the Gitea web UI under user settings/applications/access tokens, then paste it into the dashboard `Token` field for the import.
 
-After editing the dashboard, use `Save + Regenerate` to update both the JSON file and the README generated section. Commit and push those file changes before expecting the public GitHub profile to change. The underlying command is:
+After editing the dashboard, use `Save + Regenerate` to update local files only. Use `Publish to GitHub` to save, regenerate, commit, and push the profile changes automatically. The generator command is:
 
 ```bash
 python3 scripts/generate_portfolio_section.py
