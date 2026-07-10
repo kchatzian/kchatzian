@@ -1,14 +1,14 @@
 {
   "username": "kchatzian",
-  "name": "kchatzian",
-  "source": "github_public_search",
+  "name": "Konstantinos Chatzianastasiou",
+  "source": "github_graphql",
   "start_date": "2026-01-07",
   "end_date": "2026-07-10",
   "updated_at": "2026-07-10",
-  "total_commits": 19,
-  "total_contributions": 19,
+  "total_commits": 20,
+  "total_contributions": 22,
   "restricted_contributions": 0,
-  "active_days": 2,
+  "active_days": 3,
   "current_streak": 1,
   "best_streak": 1,
   "daily": [
@@ -670,7 +670,7 @@
     },
     {
       "date": "2026-06-20",
-      "count": 0
+      "count": 1
     },
     {
       "date": "2026-06-21",
@@ -702,7 +702,7 @@
     },
     {
       "date": "2026-06-28",
-      "count": 6
+      "count": 7
     },
     {
       "date": "2026-06-29",
@@ -750,15 +750,14 @@
     },
     {
       "date": "2026-07-10",
-      "count": 13
+      "count": 14
     }
   ],
   "repositories": [
     {
       "name": "kchatzian/kchatzian",
       "url": "https://github.com/kchatzian/kchatzian",
-      "commits": 19
+      "commits": 20
     }
-  ],
-  "search_total_count": 19
+  ]
 }
