@@ -24,7 +24,8 @@
     <text x="28" y="42" fill="#94A3B8" font-family="JetBrains Mono, Consolas, monospace" font-size="16">Current level</text>
     <text x="28" y="92" fill="#00C2A8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="54" font-weight="800">18</text>
     <rect x="28" y="112" width="248" height="12" rx="6" fill="#1F2937"/>
-    <rect x="28" y="112" width="148.8" height="12" rx="6" fill="url(#line)"/>
+    <rect x="28" y="112" width="198.4" height="12" rx="6" fill="url(#line)"/>
+    <text x="28" y="142" fill="#94A3B8" font-family="JetBrains Mono, Consolas, monospace" font-size="13">80.0% to level 19 • 6 kB left</text>
   </g>
   <g transform="translate(396 138)">
     <rect width="344" height="150" rx="18" fill="#111827" stroke="#2A3A4D"/>

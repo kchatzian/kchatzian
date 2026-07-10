@@ -28,5 +28,10 @@
     "back-end": 20.0,
     "algo": 35.0,
     "ai": 10.0
-  }
+  },
+  "xp_bytes": 271950,
+  "next_level": 19,
+  "xp_to_next_level": "6 kB",
+  "xp_to_next_level_bytes": 6125,
+  "level_progress_percent": 80.0
 }

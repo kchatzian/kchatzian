@@ -235,15 +235,32 @@ query rootEventDetails($userId: Int!, $rootEventId: Int!) {
       eventId: { _eq: $rootEventId }
     }
   ) { aggregate { sum { amount } } }
-  level: transaction(
-    limit: 1
-    order_by: { amount: desc }
+  xpTransactions: transaction(
+    order_by: { createdAt: asc }
+    where: {
+      userId: { _eq: $userId }
+      type: { _eq: "xp" }
+      eventId: { _eq: $rootEventId }
+    }
+  ) { amount createdAt }
+  levels: transaction(
+    order_by: { createdAt: asc }
     where: {
       userId: { _eq: $userId }
       type: { _eq: "level" }
       eventId: { _eq: $rootEventId }
     }
-  ) { amount }
+  ) { amount createdAt }
+  eventUser: event_user(
+    limit: 1
+    where: {
+      userId: { _eq: $userId }
+      eventId: { _eq: $rootEventId }
+    }
+  ) {
+    level
+    xp { amount }
+  }
 }
 """
 
@@ -252,6 +269,50 @@ def format_xp(value: float) -> str:
     if value >= 1000:
         return f"{round(value / 1000)} kB"
     return f"{round(value)} B"
+
+
+def level_progress(details: dict) -> dict:
+    xp_total = float(details["xp"]["aggregate"]["sum"]["amount"] or 0)
+    event_user = details["eventUser"][0] if details["eventUser"] else {}
+    level = int(
+        event_user.get("level")
+        or (details["levels"][-1]["amount"] if details["levels"] else 0)
+    )
+    xp_to_next = float((event_user.get("xp") or {}).get("amount") or 0)
+
+    current_level_started_at = next(
+        (
+            item["createdAt"]
+            for item in reversed(details["levels"])
+            if int(item["amount"]) == level
+        ),
+        None,
+    )
+    current_level_threshold = 0.0
+    if current_level_started_at:
+        current_level_threshold = sum(
+            float(item["amount"])
+            for item in details["xpTransactions"]
+            if item["createdAt"] <= current_level_started_at
+        )
+
+    next_level_threshold = xp_total + xp_to_next
+    if xp_to_next > 0 and next_level_threshold > current_level_threshold:
+        progress_percent = (
+            (xp_total - current_level_threshold)
+            / (next_level_threshold - current_level_threshold)
+            * 100
+        )
+    else:
+        progress_percent = 100.0
+
+    return {
+        "level": level,
+        "xp_total": xp_total,
+        "xp_to_next": xp_to_next,
+        "next_level": level + 1,
+        "level_progress_percent": round(max(0, min(100, progress_percent)), 1),
+    }
 
 
 def main() -> None:
@@ -285,6 +346,7 @@ def main() -> None:
         ROOT_EVENT_DETAILS_QUERY,
         {"userId": user_id, "rootEventId": root_event["id"]},
     )
+    progress = level_progress(details)
 
     skills = {
         item["type"].removeprefix("skill_"): item["amount"]
@@ -304,7 +366,7 @@ def main() -> None:
             "program": "Java Full-Stack",
             "module": f"#{root_event['id']}",
             "status": "In progress",
-            "level": int(details["level"][0]["amount"] if details["level"] else 0),
+            "level": progress["level"],
             "checkpoint_level": int(skills.get("prog", 0)),
             "last_skill": recent_skill.replace("-", " ").title(),
             "cohort": current.get("cohort", "Cohort 2.2"),
@@ -313,7 +375,12 @@ def main() -> None:
                 if root_event["usersRelation"]
                 else current.get("joined_at", "")
             ),
-            "xp": format_xp(details["xp"]["aggregate"]["sum"]["amount"] or 0),
+            "xp": format_xp(progress["xp_total"]),
+            "xp_bytes": int(progress["xp_total"]),
+            "next_level": progress["next_level"],
+            "xp_to_next_level": format_xp(progress["xp_to_next"]),
+            "xp_to_next_level_bytes": int(progress["xp_to_next"]),
+            "level_progress_percent": progress["level_progress_percent"],
             "skills": skills,
             "updated_at": datetime.now(timezone.utc).date().isoformat(),
         }

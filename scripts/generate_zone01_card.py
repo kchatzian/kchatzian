@@ -7,7 +7,9 @@ ROOT = Path(__file__).resolve().parents[1]
 data = json.loads((ROOT / "data" / "zone01.json").read_text(encoding="utf-8"))
 
 level = int(data["level"])
-level_width = max(8, min(100, level / 30 * 100))
+level_progress = float(data.get("level_progress_percent", 0))
+level_width = max(8, min(100, level_progress))
+next_level = int(data.get("next_level", level + 1))
 checkpoint = int(data["checkpoint_level"])
 checkpoint_width = max(8, min(100, checkpoint))
 
@@ -41,6 +43,7 @@ svg = f'''<svg width="1200" height="360" viewBox="0 0 1200 360" fill="none" xmln
     <text x="28" y="92" fill="#00C2A8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="54" font-weight="800">{level}</text>
     <rect x="28" y="112" width="248" height="12" rx="6" fill="#1F2937"/>
     <rect x="28" y="112" width="{248 * level_width / 100:.1f}" height="12" rx="6" fill="url(#line)"/>
+    <text x="28" y="142" fill="#94A3B8" font-family="JetBrains Mono, Consolas, monospace" font-size="13">{level_progress:.1f}% to level {next_level} • {e(data.get("xp_to_next_level", "0 B"))} left</text>
   </g>
   <g transform="translate(396 138)">
     <rect width="344" height="150" rx="18" fill="#111827" stroke="#2A3A4D"/>
