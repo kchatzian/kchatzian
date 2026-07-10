@@ -8,6 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "portfolio-projects.json"
+GITEA_CACHE_PATH = ROOT / "data" / "gitea-repos.local.json"
 GENERATOR = ROOT / "scripts" / "generate_portfolio_section.py"
 GITEA_IMPORTER = ROOT / "scripts" / "fetch_gitea_projects.py"
 PUBLISH_PATHS = [
@@ -133,6 +134,31 @@ HTML = """<!doctype html>
     .name { min-width: 170px; }
     .summary { min-width: 330px; }
     .url { min-width: 260px; }
+    .repo-list {
+      margin-top: 22px;
+    }
+    .repo-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    }
+    .repo-item {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--panel);
+      padding: 12px;
+      min-height: 104px;
+    }
+    .repo-item a {
+      color: var(--accent-2);
+      font-weight: 800;
+      text-decoration: none;
+    }
+    .repo-meta {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 6px;
+    }
     .small { width: 82px; }
     .medium { min-width: 135px; }
     .status {
@@ -220,6 +246,12 @@ HTML = """<!doctype html>
       </thead>
       <tbody id="rows"></tbody>
     </table>
+    <section class="repo-list">
+      <div class="topbar">
+        <span class="badge" id="repo-meta">Gitea repositories: not imported yet</span>
+      </div>
+      <div class="repo-grid" id="repo-grid"></div>
+    </section>
   </main>
   <script>
     const statuses = ["ready", "polish", "review", "not-ready"];
@@ -229,6 +261,8 @@ HTML = """<!doctype html>
     const statusEl = document.querySelector("#status");
     const metaEl = document.querySelector("#meta");
     const rowsEl = document.querySelector("#rows");
+    const repoGridEl = document.querySelector("#repo-grid");
+    const repoMetaEl = document.querySelector("#repo-meta");
 
     function setStatus(text) {
       statusEl.textContent = text;
@@ -313,11 +347,45 @@ HTML = """<!doctype html>
       metaEl.textContent = `Updated ${state.updated_at || "unknown"} • ${state.projects.length} projects`;
     }
 
+    function renderRepos(cache) {
+      repoGridEl.replaceChildren();
+      const repos = cache.repos || [];
+      repoMetaEl.textContent = repos.length
+        ? `Gitea repositories: ${repos.length} imported from ${cache.base_url}`
+        : "Gitea repositories: none imported";
+      for (const repo of repos) {
+        const item = document.createElement("div");
+        item.className = "repo-item";
+        const link = document.createElement("a");
+        link.href = repo.repo_url;
+        link.target = "_blank";
+        link.rel = "noreferrer";
+        link.textContent = repo.full_name;
+        const desc = document.createElement("div");
+        desc.className = "repo-meta";
+        desc.textContent = repo.description || "No description";
+        const meta = document.createElement("div");
+        meta.className = "repo-meta";
+        meta.textContent = `${repo.language || "Unknown"} • ${repo.private ? "private" : "public"} • updated ${repo.updated_at || "unknown"}`;
+        item.appendChild(link);
+        item.appendChild(desc);
+        item.appendChild(meta);
+        repoGridEl.appendChild(item);
+      }
+    }
+
+    async function loadRepos() {
+      const res = await fetch("/api/gitea-repos");
+      const cache = await res.json();
+      renderRepos(cache);
+    }
+
     async function load() {
       setStatus("Loading...");
       const res = await fetch("/api/projects");
       state = await res.json();
       render();
+      await loadRepos();
       setStatus("Ready");
     }
 
@@ -362,6 +430,7 @@ HTML = """<!doctype html>
       }
       state = result.data;
       render();
+      await loadRepos();
       setStatus(result.message);
     }
 
@@ -457,6 +526,13 @@ class Handler(BaseHTTPRequestHandler):
 
         if self.path == "/api/projects":
             self.send_json(200, json.loads(DATA_PATH.read_text(encoding="utf-8")))
+            return
+
+        if self.path == "/api/gitea-repos":
+            if GITEA_CACHE_PATH.exists():
+                self.send_json(200, json.loads(GITEA_CACHE_PATH.read_text(encoding="utf-8")))
+            else:
+                self.send_json(200, {"repos": []})
             return
 
         self.send_json(404, {"error": "Not found"})
