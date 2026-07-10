@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json
+import os
 import subprocess
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -8,6 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "portfolio-projects.json"
 GENERATOR = ROOT / "scripts" / "generate_portfolio_section.py"
+GITEA_IMPORTER = ROOT / "scripts" / "fetch_gitea_projects.py"
 
 HTML = """<!doctype html>
 <html lang="en">
@@ -54,6 +56,19 @@ HTML = """<!doctype html>
       gap: 10px;
       flex-wrap: wrap;
       align-items: center;
+    }
+    .importer {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) minmax(150px, 220px) minmax(180px, 260px) auto;
+      gap: 10px;
+      margin: 0 0 16px;
+      align-items: end;
+    }
+    .importer label {
+      display: grid;
+      gap: 5px;
+      color: var(--muted);
+      font-size: 12px;
     }
     button, select, input, textarea {
       border: 1px solid var(--line);
@@ -147,6 +162,7 @@ HTML = """<!doctype html>
       header, .topbar { align-items: flex-start; flex-direction: column; }
       main { padding: 18px; overflow-x: auto; }
       table { min-width: 1050px; }
+      .importer { grid-template-columns: minmax(260px, 1fr); }
     }
   </style>
 </head>
@@ -168,6 +184,18 @@ HTML = """<!doctype html>
       <div class="status" id="status"></div>
     </div>
     <p class="hint">Save + Regenerate updates local files. To publish profile changes on GitHub, commit and push the modified README/data files.</p>
+    <form class="importer" id="gitea-importer">
+      <label>Gitea URL
+        <input id="gitea-url" type="text" placeholder="https://git.example.com" value="__GITEA_BASE_URL__" />
+      </label>
+      <label>Username
+        <input id="gitea-username" type="text" placeholder="kchatzian" value="__GITEA_USERNAME__" />
+      </label>
+      <label>Token
+        <input id="gitea-token" type="password" placeholder="optional, not saved" />
+      </label>
+      <button class="secondary" type="submit">Import from Gitea</button>
+    </form>
     <table>
       <thead>
         <tr>
@@ -309,14 +337,39 @@ HTML = """<!doctype html>
       setStatus(res.ok ? result.message : result.error);
     }
 
+    async function importGitea(event) {
+      event.preventDefault();
+      setStatus("Importing from Gitea...");
+      const res = await fetch("/api/import-gitea", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          base_url: document.querySelector("#gitea-url").value,
+          username: document.querySelector("#gitea-username").value,
+          token: document.querySelector("#gitea-token").value
+        })
+      });
+      const result = await res.json();
+      if (!res.ok) {
+        setStatus(result.error || "Gitea import failed");
+        return;
+      }
+      state = result.data;
+      render();
+      setStatus(result.message);
+    }
+
     document.querySelector("#reload").addEventListener("click", load);
     document.querySelector("#save").addEventListener("click", () => save(true));
     document.querySelector("#generate").addEventListener("click", generate);
+    document.querySelector("#gitea-importer").addEventListener("submit", importGitea);
     load();
   </script>
 </body>
 </html>
-"""
+""".replace("__GITEA_BASE_URL__", os.environ.get("GITEA_BASE_URL", "")).replace(
+    "__GITEA_USERNAME__", os.environ.get("GITEA_USERNAME", "kchatzian")
+)
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -379,6 +432,45 @@ class Handler(BaseHTTPRequestHandler):
             try:
                 subprocess.run(["python3", str(GENERATOR)], check=True, cwd=ROOT)
                 self.send_json(200, {"message": "README regenerated"})
+            except Exception as error:
+                self.send_json(500, {"error": str(error)})
+            return
+
+        if self.path == "/api/import-gitea":
+            try:
+                length = int(self.headers.get("Content-Length", "0"))
+                payload = json.loads(self.rfile.read(length))
+                base_url = payload.get("base_url", "").strip()
+                username = payload.get("username", "").strip()
+                token = payload.get("token", "").strip()
+                if not base_url or not username:
+                    raise ValueError("Gitea URL and username are required.")
+
+                env = os.environ.copy()
+                env["GITEA_BASE_URL"] = base_url
+                env["GITEA_USERNAME"] = username
+                if token:
+                    env["GITEA_TOKEN"] = token
+
+                result = subprocess.run(
+                    ["python3", str(GITEA_IMPORTER)],
+                    check=True,
+                    cwd=ROOT,
+                    env=env,
+                    capture_output=True,
+                    text=True,
+                )
+                subprocess.run(["python3", str(GENERATOR)], check=True, cwd=ROOT)
+                data = json.loads(DATA_PATH.read_text(encoding="utf-8"))
+                self.send_json(
+                    200,
+                    {
+                        "message": result.stdout.strip() or "Imported from Gitea",
+                        "data": data,
+                    },
+                )
+            except subprocess.CalledProcessError as error:
+                self.send_json(500, {"error": error.stderr.strip() or str(error)})
             except Exception as error:
                 self.send_json(500, {"error": str(error)})
             return

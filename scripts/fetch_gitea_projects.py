@@ -58,7 +58,23 @@ def infer_stack(repo):
     return stack
 
 
-def merge_repo(existing, repo):
+def aliases(project):
+    return {item.lower() for item in project.get("gitea_aliases", [])}
+
+
+def match_slug(by_slug, repo):
+    slug = repo_slug(repo)
+    if slug in by_slug:
+        return slug
+
+    for project_slug, project in by_slug.items():
+        if slug in aliases(project):
+            return project_slug
+
+    return slug
+
+
+def merge_repo(existing, repo, preserve_manual_url=False):
     merged = dict(existing)
     merged.setdefault("slug", repo_slug(repo))
     merged.setdefault("name", repo["name"])
@@ -74,7 +90,8 @@ def merge_repo(existing, repo):
     merged.setdefault("priority", 999)
     merged.setdefault("notes", "")
 
-    merged["repo_url"] = public_repo_url(repo)
+    if not preserve_manual_url or not merged.get("repo_url"):
+        merged["repo_url"] = public_repo_url(repo)
     if infer_stack(repo):
         merged["stack"] = infer_stack(repo)
     merged["gitea"] = {
@@ -114,7 +131,7 @@ def main():
         unique_repos[repo["full_name"]] = repo
 
     for repo in unique_repos.values():
-        slug = repo_slug(repo)
+        slug = match_slug(by_slug, repo)
         by_slug[slug] = merge_repo(by_slug.get(slug, {}), repo)
 
     data["projects"] = sorted(by_slug.values(), key=lambda project: project.get("priority", 999))

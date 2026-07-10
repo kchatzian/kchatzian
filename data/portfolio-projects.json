@@ -10,6 +10,13 @@
       "show_on_cv": true,
       "source": "gitea",
       "repo_url": "",
+      "gitea_aliases": [
+        "groupie-tracker",
+        "groupie-tracker-search-bar",
+        "groupie-tracker-filters",
+        "groupie-tracker-geolocalization",
+        "groupie-tracker-visualizations"
+      ],
       "focus": "Go Web App",
       "stack": [
         "Go",
@@ -36,6 +43,9 @@
       "show_on_cv": true,
       "source": "gitea",
       "repo_url": "",
+      "gitea_aliases": [
+        "net-cat"
+      ],
       "focus": "Networking",
       "stack": [
         "Go",
@@ -62,6 +72,9 @@
       "show_on_cv": true,
       "source": "gitea",
       "repo_url": "",
+      "gitea_aliases": [
+        "lem-in"
+      ],
       "focus": "Algorithms",
       "stack": [
         "Go",
@@ -88,6 +101,9 @@
       "show_on_cv": true,
       "source": "gitea",
       "repo_url": "",
+      "gitea_aliases": [
+        "push-swap"
+      ],
       "focus": "Algorithms",
       "stack": [
         "Go",
@@ -109,10 +125,13 @@
       "name": "tetris-optimizer",
       "status": "polish",
       "visibility": "selected",
-      "show_on_profile": false,
-      "show_on_cv": false,
+      "show_on_profile": true,
+      "show_on_cv": true,
       "source": "gitea",
       "repo_url": "",
+      "gitea_aliases": [
+        "tetris-optimizer"
+      ],
       "focus": "Backtracking",
       "stack": [
         "Go",
@@ -134,10 +153,13 @@
       "name": "ascii-art-web-dockerize",
       "status": "ready",
       "visibility": "selected",
-      "show_on_profile": false,
+      "show_on_profile": true,
       "show_on_cv": false,
       "source": "gitea",
       "repo_url": "",
+      "gitea_aliases": [
+        "ascii-art-web-dockerize"
+      ],
       "focus": "Web + Docker",
       "stack": [
         "Go",
@@ -164,6 +186,9 @@
       "show_on_cv": false,
       "source": "gitea",
       "repo_url": "",
+      "gitea_aliases": [
+        "forum"
+      ],
       "focus": "Full-Stack Web",
       "stack": [
         "Go",

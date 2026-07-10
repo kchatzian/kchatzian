@@ -45,6 +45,8 @@ Gitea exposes its REST API under `/api/v1`, with Swagger/OpenAPI documentation a
 Start the local dashboard with:
 
 ```bash
+GITEA_BASE_URL="https://gitea.example.com" \
+GITEA_USERNAME="kchatzian" \
 python3 scripts/portfolio_dashboard.py
 ```
 
@@ -64,6 +66,8 @@ The dashboard reads `data/portfolio-projects.json` and exposes these controls:
 | `status` | `ready`, `polish`, `review`, or `not-ready`. |
 | `visibility` | `featured`, `selected`, `candidate`, or `future-featured`. |
 | `priority` | Sort order in public outputs. |
+
+Use `Import from Gitea` to fill repository URLs automatically from the Gitea profile/API. Add a token in the dashboard form when you need private repositories or team repositories owned by collaborators. The token is used for that request and is not saved to the repository.
 
 After editing the dashboard, use `Save + Regenerate` to update both the JSON file and the README generated section. Commit and push those file changes before expecting the public GitHub profile to change. The underlying command is:
 
