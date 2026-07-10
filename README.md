@@ -113,20 +113,13 @@ mindmap
       Intelligent Automation
 ```
 
-## GitHub Analytics
+## GitHub Activity
 
 <div align="center">
-  <img height="170" src="https://github-readme-stats.vercel.app/api?username=kchatzian&show_icons=true&theme=tokyonight&hide_border=true&rank_icon=github" alt="GitHub stats" />
-  <img height="170" src="https://github-readme-stats.vercel.app/api/top-langs/?username=kchatzian&layout=compact&theme=tokyonight&hide_border=true" alt="Top languages" />
+  <img src="./assets/github-activity.svg" alt="GitHub commit and contribution activity timeline" width="100%" />
 </div>
 
-<div align="center">
-  <img src="https://streak-stats.demolab.com?user=kchatzian&theme=tokyonight&hide_border=true" alt="GitHub streak" />
-</div>
-
-<div align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=kchatzian&theme=tokyo-night&hide_border=true&area=true" alt="Contribution activity graph" />
-</div>
+This timeline is generated from GitHub contribution data starting from my Zone01 entry date. It tracks commit frequency, active coding days, streaks, and repository contribution weight automatically.
 
 <!-- portfolio-projects:start -->
 ## Selected Projects
