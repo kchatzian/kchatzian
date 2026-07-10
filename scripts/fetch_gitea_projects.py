@@ -144,7 +144,7 @@ def merge_repo(existing, repo, preserve_manual_url=False):
 
     if not preserve_manual_url or not merged.get("repo_url"):
         merged["repo_url"] = public_repo_url(repo)
-    if infer_stack(repo):
+    if infer_stack(repo) and not merged.get("stack"):
         merged["stack"] = infer_stack(repo)
     merged["gitea"] = {
         "owner": repo["owner"]["login"],
@@ -208,6 +208,8 @@ def main():
 
     for repo in unique_repos.values():
         slug = match_slug(by_slug, repo)
+        if slug not in by_slug:
+            continue
         by_slug[slug] = merge_repo(by_slug.get(slug, {}), repo)
 
     data["projects"] = sorted(by_slug.values(), key=lambda project: project.get("priority", 999))

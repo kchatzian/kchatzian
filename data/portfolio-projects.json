@@ -9,7 +9,7 @@
       "show_on_profile": true,
       "show_on_cv": true,
       "source": "gitea",
-      "repo_url": "",
+      "repo_url": "https://platform.zone01.gr/git/kchatzian/groupie-tracker-visualizations",
       "gitea_aliases": [
         "groupie-tracker",
         "groupie-tracker-search-bar",
@@ -32,7 +32,15 @@
         "Search, filters, geolocation, and visualization features"
       ],
       "priority": 1,
-      "notes": "Best first public candidate. Present the full groupie-tracker family as one complete project."
+      "notes": "Best first public candidate. Present the full groupie-tracker family as one complete project.",
+      "gitea": {
+        "owner": "kchatzian",
+        "name": "groupie-tracker-visualizations",
+        "full_name": "kchatzian/groupie-tracker-visualizations",
+        "private": true,
+        "fork": false,
+        "updated_at": "2026-06-20T20:28:30Z"
+      }
     },
     {
       "slug": "net-cat",
@@ -42,7 +50,7 @@
       "show_on_profile": true,
       "show_on_cv": true,
       "source": "gitea",
-      "repo_url": "",
+      "repo_url": "https://platform.zone01.gr/git/kchatzian/net-cat",
       "gitea_aliases": [
         "net-cat"
       ],
@@ -61,7 +69,15 @@
         "Terminal-first communication flow"
       ],
       "priority": 2,
-      "notes": "Strong systems/backend signal for CV."
+      "notes": "Strong systems/backend signal for CV.",
+      "gitea": {
+        "owner": "kchatzian",
+        "name": "net-cat",
+        "full_name": "kchatzian/net-cat",
+        "private": true,
+        "fork": false,
+        "updated_at": "2026-05-31T11:31:32Z"
+      }
     },
     {
       "slug": "lem-in",
@@ -71,7 +87,7 @@
       "show_on_profile": true,
       "show_on_cv": true,
       "source": "gitea",
-      "repo_url": "",
+      "repo_url": "https://platform.zone01.gr/git/hmim/lem-in",
       "gitea_aliases": [
         "lem-in"
       ],
@@ -90,7 +106,15 @@
         "Algorithmic optimization under constraints"
       ],
       "priority": 3,
-      "notes": "Good problem-solving signal once README explains the algorithm clearly."
+      "notes": "Good problem-solving signal once README explains the algorithm clearly.",
+      "gitea": {
+        "owner": "hmim",
+        "name": "lem-in",
+        "full_name": "hmim/lem-in",
+        "private": true,
+        "fork": false,
+        "updated_at": "2026-06-17T13:29:12Z"
+      }
     },
     {
       "slug": "push-swap",
@@ -100,7 +124,7 @@
       "show_on_profile": true,
       "show_on_cv": true,
       "source": "gitea",
-      "repo_url": "",
+      "repo_url": "https://platform.zone01.gr/git/kchatzian/push-swap",
       "gitea_aliases": [
         "push-swap"
       ],
@@ -118,17 +142,25 @@
         "Clear input validation and error handling"
       ],
       "priority": 4,
-      "notes": "Worth showing after README polish with examples and operation-count notes."
+      "notes": "Worth showing after README polish with examples and operation-count notes.",
+      "gitea": {
+        "owner": "kchatzian",
+        "name": "push-swap",
+        "full_name": "kchatzian/push-swap",
+        "private": true,
+        "fork": false,
+        "updated_at": "2026-05-03T18:58:43Z"
+      }
     },
     {
       "slug": "tetris-optimizer",
       "name": "tetris-optimizer",
       "status": "polish",
       "visibility": "selected",
-      "show_on_profile": true,
-      "show_on_cv": true,
+      "show_on_profile": false,
+      "show_on_cv": false,
       "source": "gitea",
-      "repo_url": "",
+      "repo_url": "https://platform.zone01.gr/git/kchatzian/tetris-optimizer",
       "gitea_aliases": [
         "tetris-optimizer"
       ],
@@ -146,17 +178,25 @@
         "Optimization of constrained layouts"
       ],
       "priority": 5,
-      "notes": "Good secondary algorithm project."
+      "notes": "Good secondary algorithm project.",
+      "gitea": {
+        "owner": "kchatzian",
+        "name": "tetris-optimizer",
+        "full_name": "kchatzian/tetris-optimizer",
+        "private": true,
+        "fork": false,
+        "updated_at": "2026-03-22T20:04:05Z"
+      }
     },
     {
       "slug": "ascii-art-web-dockerize",
       "name": "ascii-art-web-dockerize",
       "status": "ready",
       "visibility": "selected",
-      "show_on_profile": true,
+      "show_on_profile": false,
       "show_on_cv": false,
       "source": "gitea",
-      "repo_url": "",
+      "repo_url": "https://platform.zone01.gr/git/kchatzian/ascii-art-web-dockerize",
       "gitea_aliases": [
         "ascii-art-web-dockerize"
       ],
@@ -175,7 +215,15 @@
         "Simple browser UI"
       ],
       "priority": 6,
-      "notes": "Useful as supporting evidence for Docker/web fundamentals."
+      "notes": "Useful as supporting evidence for Docker/web fundamentals.",
+      "gitea": {
+        "owner": "kchatzian",
+        "name": "ascii-art-web-dockerize",
+        "full_name": "kchatzian/ascii-art-web-dockerize",
+        "private": true,
+        "fork": false,
+        "updated_at": "2026-04-29T20:25:40Z"
+      }
     },
     {
       "slug": "forum",
@@ -185,7 +233,7 @@
       "show_on_profile": false,
       "show_on_cv": false,
       "source": "gitea",
-      "repo_url": "",
+      "repo_url": "https://platform.zone01.gr/git/kchatzian/forum",
       "gitea_aliases": [
         "forum"
       ],
@@ -204,7 +252,15 @@
         "Full-stack web architecture"
       ],
       "priority": 7,
-      "notes": "Do not feature yet. Promote when stable, documented, and safe to publish."
+      "notes": "Do not feature yet. Promote when stable, documented, and safe to publish.",
+      "gitea": {
+        "owner": "kchatzian",
+        "name": "forum",
+        "full_name": "kchatzian/forum",
+        "private": true,
+        "fork": false,
+        "updated_at": "2026-06-24T14:24:34Z"
+      }
     }
   ]
 }
