@@ -19,6 +19,11 @@ DEFAULT_FIREFOX_STORAGE = (
     / "snap/firefox/common/.mozilla/firefox/zcaxwznc.default/storage/default/"
     / "https+++platform.zone01.gr/ls/data.sqlite"
 )
+FIREFOX_STORAGE_GLOB = "*/storage/default/https+++platform.zone01.gr/ls/data.sqlite"
+FIREFOX_PROFILE_ROOTS = (
+    Path.home() / "snap/firefox/common/.mozilla/firefox",
+    Path.home() / ".mozilla/firefox",
+)
 
 
 def snappy_decompress(data: bytes) -> bytes:
@@ -81,7 +86,7 @@ def decode_jwt_payload(token: str) -> dict:
 
 
 def read_firefox_token() -> str:
-    storage_path = Path(os.environ.get("ZONE01_FIREFOX_STORAGE", DEFAULT_FIREFOX_STORAGE))
+    storage_path = find_firefox_storage()
     if not storage_path.exists():
         raise FileNotFoundError(f"Firefox Zone01 localStorage not found: {storage_path}")
 
@@ -100,6 +105,25 @@ def read_firefox_token() -> str:
     if compression_type == 1:
         return snappy_decompress(value).decode("utf-8")
     return value.decode("utf-8") if isinstance(value, bytes) else str(value)
+
+
+def find_firefox_storage() -> Path:
+    configured = os.environ.get("ZONE01_FIREFOX_STORAGE", "").strip()
+    if configured:
+        return Path(configured).expanduser()
+
+    if DEFAULT_FIREFOX_STORAGE.exists():
+        return DEFAULT_FIREFOX_STORAGE
+
+    matches = []
+    for profile_root in FIREFOX_PROFILE_ROOTS:
+        if profile_root.exists():
+            matches.extend(profile_root.glob(FIREFOX_STORAGE_GLOB))
+
+    if matches:
+        return max(matches, key=lambda path: path.stat().st_mtime)
+
+    return DEFAULT_FIREFOX_STORAGE
 
 
 def get_token() -> str:

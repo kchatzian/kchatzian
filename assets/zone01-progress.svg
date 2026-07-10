@@ -38,7 +38,7 @@
     <rect width="368" height="150" rx="18" fill="#111827" stroke="#2A3A4D"/>
     <text x="28" y="42" fill="#94A3B8" font-family="JetBrains Mono, Consolas, monospace" font-size="16">Current module</text>
     <text x="28" y="84" fill="#E5E7EB" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="32" font-weight="800">#585 • In progress</text>
-    <text x="28" y="120" fill="#A78BFA" font-family="JetBrains Mono, Consolas, monospace" font-size="16">Last skill: Go • XP: 260 kB</text>
+    <text x="28" y="120" fill="#A78BFA" font-family="JetBrains Mono, Consolas, monospace" font-size="16">Last skill: Go • XP: 272 kB</text>
   </g>
   <g transform="translate(64 315)" font-family="JetBrains Mono, Consolas, monospace" font-size="15">
     <text fill="#94A3B8">Rank: </text>
@@ -48,6 +48,6 @@
     <text x="585" fill="#94A3B8">Joined: </text>
     <text x="660" fill="#E5E7EB">2026-01-07</text>
     <text x="875" fill="#94A3B8">Updated: </text>
-    <text x="960" fill="#E5E7EB">2026-06-28</text>
+    <text x="960" fill="#E5E7EB">2026-07-10</text>
   </g>
 </svg>

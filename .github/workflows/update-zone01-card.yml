@@ -21,11 +21,17 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Fetch latest Zone01 progress
         if: ${{ env.ZONE01_JWT != '' }}
         run: python3 scripts/fetch_zone01_progress.py --refreshed-token-path "$RUNNER_TEMP/zone01_jwt"
+
+      - name: Require Zone01 token
+        if: ${{ env.ZONE01_JWT == '' }}
+        run: |
+          echo "::error::Missing repository secret ZONE01_JWT. Add a fresh Zone01 JWT so the scheduled workflow can fetch progress."
+          exit 1
 
       - name: Generate card
         run: python3 scripts/generate_zone01_card.py
@@ -36,6 +42,8 @@ jobs:
         run: |
           if [ -n "${GH_TOKEN:-}" ] && [ -s "$RUNNER_TEMP/zone01_jwt" ]; then
             gh secret set ZONE01_JWT --repo kchatzian/kchatzian < "$RUNNER_TEMP/zone01_jwt"
+          elif [ -s "$RUNNER_TEMP/zone01_jwt" ]; then
+            echo "::warning::PROFILE_REPO_PAT is missing, so ZONE01_JWT was not rotated. The scheduled workflow may fail after the current token expires."
           fi
 
       - name: Commit generated SVG
