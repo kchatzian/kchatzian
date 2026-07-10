@@ -136,6 +136,9 @@ HTML = """<!doctype html>
       color: var(--muted);
       font-family: "JetBrains Mono", Consolas, monospace;
       font-size: 12px;
+      max-width: min(1120px, 100%);
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
     }
     .badge {
       display: inline-block;
@@ -192,7 +195,7 @@ HTML = """<!doctype html>
         <input id="gitea-username" type="text" placeholder="kchatzian" value="__GITEA_USERNAME__" />
       </label>
       <label>Token
-        <input id="gitea-token" type="password" placeholder="optional, not saved" />
+        <input id="gitea-token" type="password" placeholder="required for Zone01, not saved" />
       </label>
       <button class="secondary" type="submit">Import from Gitea</button>
     </form>

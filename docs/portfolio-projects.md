@@ -69,6 +69,8 @@ The dashboard reads `data/portfolio-projects.json` and exposes these controls:
 
 Use `Import from Gitea` to fill repository URLs automatically from the Gitea profile/API. Add a token in the dashboard form when you need private repositories or team repositories owned by collaborators. The token is used for that request and is not saved to the repository.
 
+For Zone01 Gitea, the token is required even when the profile is visible in the browser. Create it from the Gitea web UI under user settings/applications/access tokens, then paste it into the dashboard `Token` field for the import.
+
 After editing the dashboard, use `Save + Regenerate` to update both the JSON file and the README generated section. Commit and push those file changes before expecting the public GitHub profile to change. The underlying command is:
 
 ```bash

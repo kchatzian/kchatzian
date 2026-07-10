@@ -65,6 +65,12 @@ def endpoint_repos(base_url, path, token, query=None, required=True):
         if error.code == 404 and not required:
             return []
         message = clean_http_message(error.read().decode("utf-8", errors="replace").strip())
+        if error.code == 403 and "Only signed in user is allowed" in message:
+            raise RuntimeError(
+                f"Gitea API requires authentication for {base_url.rstrip('/')}{path}. "
+                "Create a Gitea access token and paste it into the dashboard Token field. "
+                "For Zone01 this token is required; the browser login cookie is not enough for API access."
+            ) from error
         raise RuntimeError(
             f"Gitea API request failed with HTTP {error.code} for {base_url.rstrip('/')}{path}. "
             f"Check that the Gitea URL is the site root or profile URL, and that the username is correct. {message}"
