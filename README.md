@@ -137,7 +137,6 @@ mindmap
 | [net-cat](https://platform.zone01.gr/git/kchatzian/net-cat) | Networking | A TCP chat/server project focused on client connections, concurrency, and terminal-based workflows. |
 | [lem-in](https://platform.zone01.gr/git/hmim/lem-in) | Algorithms | A graph/pathfinding project that routes ants through rooms while optimizing movement over available paths. |
 | [push-swap](https://platform.zone01.gr/git/kchatzian/push-swap) | Algorithms | A constrained sorting project focused on minimizing operations with two stacks. |
-| [tetris-optimizer](https://platform.zone01.gr/git/kchatzian/tetris-optimizer) | Backtracking | A placement optimizer that packs tetromino-style pieces into the smallest valid square. |
 
 These are curated from Zone01 work and selected for portfolio signal, not project count.
 <!-- portfolio-projects:end -->

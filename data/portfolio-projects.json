@@ -157,8 +157,8 @@
       "name": "tetris-optimizer",
       "status": "polish",
       "visibility": "selected",
-      "show_on_profile": true,
-      "show_on_cv": true,
+      "show_on_profile": false,
+      "show_on_cv": false,
       "source": "gitea",
       "repo_url": "https://platform.zone01.gr/git/kchatzian/tetris-optimizer",
       "gitea_aliases": [
