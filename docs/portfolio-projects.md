@@ -60,17 +60,22 @@ The dashboard reads `data/portfolio-projects.json` and exposes these controls:
 | --- | --- |
 | `show_on_profile` | Include in the GitHub profile README generated section. |
 | `show_on_cv` | Include in a future generated CV project section. |
+| `repo_url` | Link used by the generated profile section and future CV output. Leave empty for private or unfinished repositories. |
 | `status` | `ready`, `polish`, `review`, or `not-ready`. |
 | `visibility` | `featured`, `selected`, `candidate`, or `future-featured`. |
 | `priority` | Sort order in public outputs. |
 
-After editing the dashboard, use `Save + Regenerate` to update both the JSON file and the README generated section. The underlying command is:
+After editing the dashboard, use `Save + Regenerate` to update both the JSON file and the README generated section. Commit and push those file changes before expecting the public GitHub profile to change. The underlying command is:
 
 ```bash
 python3 scripts/generate_portfolio_section.py
 ```
 
 Later it can also generate a CV section from the `show_on_cv` projects.
+
+## Link Policy
+
+Use links for projects that are public, polished, and safe for a recruiter or collaborator to inspect. For private school repositories or unfinished work, keep the project in the list without a URL until there is a clean public mirror, demo, or write-up.
 
 ## Publishing Rule
 

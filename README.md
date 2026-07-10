@@ -137,8 +137,6 @@ mindmap
 | net-cat | Networking | A TCP chat/server project focused on client connections, concurrency, and terminal-based workflows. |
 | lem-in | Algorithms | A graph/pathfinding project that routes ants through rooms while optimizing movement over available paths. |
 | push-swap | Algorithms | A constrained sorting project focused on minimizing operations with two stacks. |
-| tetris-optimizer | Backtracking | A placement optimizer that packs tetromino-style pieces into the smallest valid square. |
-| ascii-art-web-dockerize | Web + Docker | A containerized Go web project that serves ASCII-art generation through a browser interface. |
 
 These are curated from Zone01 work and selected for portfolio signal, not project count.
 <!-- portfolio-projects:end -->

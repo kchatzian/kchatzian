@@ -11,7 +11,12 @@
       "source": "gitea",
       "repo_url": "",
       "focus": "Go Web App",
-      "stack": ["Go", "HTML", "CSS", "API integration"],
+      "stack": [
+        "Go",
+        "HTML",
+        "CSS",
+        "API integration"
+      ],
       "summary": "A Go web application that explores artist data with search, filters, geolocation, and visualizations.",
       "cv_summary": "Built a Go web application with search, filtering, geolocation, visualization features, and structured data handling.",
       "highlights": [
@@ -32,7 +37,12 @@
       "source": "gitea",
       "repo_url": "",
       "focus": "Networking",
-      "stack": ["Go", "TCP", "Concurrency", "Terminal UX"],
+      "stack": [
+        "Go",
+        "TCP",
+        "Concurrency",
+        "Terminal UX"
+      ],
       "summary": "A TCP chat/server project focused on client connections, concurrency, and terminal-based workflows.",
       "cv_summary": "Implemented a TCP-based client/server application in Go with concurrent connection handling and terminal interaction.",
       "highlights": [
@@ -53,7 +63,12 @@
       "source": "gitea",
       "repo_url": "",
       "focus": "Algorithms",
-      "stack": ["Go", "Graphs", "Pathfinding", "Parsing"],
+      "stack": [
+        "Go",
+        "Graphs",
+        "Pathfinding",
+        "Parsing"
+      ],
       "summary": "A graph/pathfinding project that routes ants through rooms while optimizing movement over available paths.",
       "cv_summary": "Solved a graph optimization problem using parsing, pathfinding, and movement scheduling logic.",
       "highlights": [
@@ -74,7 +89,11 @@
       "source": "gitea",
       "repo_url": "",
       "focus": "Algorithms",
-      "stack": ["Go", "Sorting", "Optimization"],
+      "stack": [
+        "Go",
+        "Sorting",
+        "Optimization"
+      ],
       "summary": "A constrained sorting project focused on minimizing operations with two stacks.",
       "cv_summary": "Built a constrained sorting solution that minimizes operations using stack-based algorithms.",
       "highlights": [
@@ -90,12 +109,16 @@
       "name": "tetris-optimizer",
       "status": "polish",
       "visibility": "selected",
-      "show_on_profile": true,
+      "show_on_profile": false,
       "show_on_cv": false,
       "source": "gitea",
       "repo_url": "",
       "focus": "Backtracking",
-      "stack": ["Go", "Backtracking", "Optimization"],
+      "stack": [
+        "Go",
+        "Backtracking",
+        "Optimization"
+      ],
       "summary": "A placement optimizer that packs tetromino-style pieces into the smallest valid square.",
       "cv_summary": "Implemented a backtracking optimizer for constrained piece placement.",
       "highlights": [
@@ -111,12 +134,17 @@
       "name": "ascii-art-web-dockerize",
       "status": "ready",
       "visibility": "selected",
-      "show_on_profile": true,
+      "show_on_profile": false,
       "show_on_cv": false,
       "source": "gitea",
       "repo_url": "",
       "focus": "Web + Docker",
-      "stack": ["Go", "Docker", "HTML", "CSS"],
+      "stack": [
+        "Go",
+        "Docker",
+        "HTML",
+        "CSS"
+      ],
       "summary": "A containerized Go web project that serves ASCII-art generation through a browser interface.",
       "cv_summary": "Containerized a Go web application with Docker and browser-based interaction.",
       "highlights": [
@@ -137,7 +165,12 @@
       "source": "gitea",
       "repo_url": "",
       "focus": "Full-Stack Web",
-      "stack": ["Go", "SQL", "Authentication", "Web"],
+      "stack": [
+        "Go",
+        "SQL",
+        "Authentication",
+        "Web"
+      ],
       "summary": "A full-stack forum platform planned as the strongest future portfolio project once complete.",
       "cv_summary": "Full-stack forum platform with authentication, persistence, and user-generated content.",
       "highlights": [

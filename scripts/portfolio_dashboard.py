@@ -113,6 +113,7 @@ HTML = """<!doctype html>
     }
     .name { min-width: 170px; }
     .summary { min-width: 330px; }
+    .url { min-width: 260px; }
     .small { width: 82px; }
     .medium { min-width: 135px; }
     .status {
@@ -129,6 +130,11 @@ HTML = """<!doctype html>
       color: var(--muted);
       font-size: 12px;
       white-space: nowrap;
+    }
+    .hint {
+      margin: 0 0 14px;
+      color: var(--muted);
+      max-width: 980px;
     }
     .topbar {
       display: flex;
@@ -158,9 +164,10 @@ HTML = """<!doctype html>
   </header>
   <main>
     <div class="topbar">
-      <span class="badge">Profile and CV selection source: data/portfolio-projects.json</span>
+      <span class="badge">Source: data/portfolio-projects.json</span>
       <div class="status" id="status"></div>
     </div>
+    <p class="hint">Save + Regenerate updates local files. To publish profile changes on GitHub, commit and push the modified README/data files.</p>
     <table>
       <thead>
         <tr>
@@ -171,6 +178,7 @@ HTML = """<!doctype html>
           <th class="medium">Visibility</th>
           <th class="small">Profile</th>
           <th class="small">CV</th>
+          <th class="url">Project URL</th>
           <th class="summary">Summary</th>
         </tr>
       </thead>
@@ -190,12 +198,17 @@ HTML = """<!doctype html>
       statusEl.textContent = text;
     }
 
+    function markDirty() {
+      setStatus("Unsaved changes");
+    }
+
     function input(value, key, index, type = "text") {
       const el = document.createElement("input");
       el.type = type;
       el.value = value ?? "";
       el.addEventListener("input", () => {
         state.projects[index][key] = type === "number" ? Number(el.value) : el.value;
+        markDirty();
       });
       return el;
     }
@@ -206,6 +219,7 @@ HTML = """<!doctype html>
       el.checked = Boolean(value);
       el.addEventListener("change", () => {
         state.projects[index][key] = el.checked;
+        markDirty();
       });
       return el;
     }
@@ -221,6 +235,7 @@ HTML = """<!doctype html>
       }
       el.addEventListener("change", () => {
         state.projects[index][key] = el.value;
+        markDirty();
       });
       return el;
     }
@@ -230,6 +245,7 @@ HTML = """<!doctype html>
       el.value = value ?? "";
       el.addEventListener("input", () => {
         state.projects[index][key] = el.value;
+        markDirty();
       });
       return el;
     }
@@ -254,6 +270,7 @@ HTML = """<!doctype html>
           tr.appendChild(cell(select(project.visibility, "visibility", index, visibilities)));
           tr.appendChild(cell(checkbox(project.show_on_profile, "show_on_profile", index)));
           tr.appendChild(cell(checkbox(project.show_on_cv, "show_on_cv", index)));
+          tr.appendChild(cell(input(project.repo_url, "repo_url", index)));
           tr.appendChild(cell(textarea(project.summary, "summary", index)));
           rowsEl.appendChild(tr);
         });
