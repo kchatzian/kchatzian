@@ -38,7 +38,7 @@ GITEA_TOKEN="..." \
 python3 scripts/fetch_gitea_projects.py
 ```
 
-Gitea exposes its REST API under `/api/v1`, with Swagger/OpenAPI documentation available on the instance at `/api/swagger` or `/swagger.v1.json`.
+`GITEA_BASE_URL` can be the Gitea site root or your profile URL. For example, both `https://gitea.example.com` and `https://gitea.example.com/kchatzian` are accepted. Gitea exposes its REST API under `/api/v1`, with Swagger/OpenAPI documentation available on the instance at `/api/swagger` or `/swagger.v1.json`.
 
 ## Dashboard Plan
 

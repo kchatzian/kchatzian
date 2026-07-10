@@ -470,7 +470,16 @@ class Handler(BaseHTTPRequestHandler):
                     },
                 )
             except subprocess.CalledProcessError as error:
-                self.send_json(500, {"error": error.stderr.strip() or str(error)})
+                self.send_json(
+                    500,
+                    {
+                        "error": (
+                            error.stderr.strip().splitlines()[-1]
+                            if error.stderr.strip()
+                            else str(error)
+                        )
+                    },
+                )
             except Exception as error:
                 self.send_json(500, {"error": str(error)})
             return

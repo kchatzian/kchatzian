@@ -2,6 +2,8 @@
 import argparse
 import json
 import os
+import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
@@ -23,6 +25,50 @@ def request_json(base_url, path, token, query=None):
     request = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(request, timeout=30) as response:
         return json.loads(response.read())
+
+
+def normalize_base_url(base_url, username):
+    parsed = urllib.parse.urlparse(base_url.strip())
+    if not parsed.scheme or not parsed.netloc:
+        raise ValueError("Gitea URL must include http:// or https://")
+
+    path_parts = [part for part in parsed.path.split("/") if part]
+    if username and path_parts and path_parts[-1].lower() == username.lower():
+        path_parts = path_parts[:-1]
+
+    normalized_path = "/" + "/".join(path_parts) if path_parts else ""
+    return urllib.parse.urlunparse(
+        (parsed.scheme, parsed.netloc, normalized_path.rstrip("/"), "", "", "")
+    )
+
+
+def candidate_base_urls(base_url, username):
+    parsed = urllib.parse.urlparse(base_url.strip())
+    normalized = normalize_base_url(base_url, username)
+    root = urllib.parse.urlunparse((parsed.scheme, parsed.netloc, "", "", "", ""))
+    candidates = [normalized, root]
+    return list(dict.fromkeys(candidate for candidate in candidates if candidate))
+
+
+def clean_http_message(message):
+    if not message:
+        return ""
+    if message.lstrip().lower().startswith(("<!doctype", "<html")):
+        return "Response was HTML, so this may be the wrong Gitea base URL."
+    return message[:500]
+
+
+def endpoint_repos(base_url, path, token, query=None, required=True):
+    try:
+        return paginated(base_url, path, token, query)
+    except urllib.error.HTTPError as error:
+        if error.code == 404 and not required:
+            return []
+        message = clean_http_message(error.read().decode("utf-8", errors="replace").strip())
+        raise RuntimeError(
+            f"Gitea API request failed with HTTP {error.code} for {base_url.rstrip('/')}{path}. "
+            f"Check that the Gitea URL is the site root or profile URL, and that the username is correct. {message}"
+        ) from error
 
 
 def paginated(base_url, path, token, query=None):
@@ -105,6 +151,21 @@ def merge_repo(existing, repo, preserve_manual_url=False):
     return merged
 
 
+def collect_repos(base_url, username, token):
+    repos = []
+    if token:
+        repos.extend(endpoint_repos(base_url, "/api/v1/user/repos", token, required=False))
+    repos.extend(
+        endpoint_repos(
+            base_url,
+            f"/api/v1/users/{username}/repos",
+            token,
+            required=not repos,
+        )
+    )
+    return repos
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--base-url", default=os.environ.get("GITEA_BASE_URL", ""))
@@ -120,10 +181,19 @@ def main():
     data = json.loads(DATA_PATH.read_text(encoding="utf-8"))
     by_slug = {project["slug"]: project for project in data["projects"]}
 
+    errors = []
     repos = []
-    if args.token:
-        repos.extend(paginated(args.base_url, "/api/v1/user/repos", args.token))
-    repos.extend(paginated(args.base_url, f"/api/v1/users/{args.username}/repos", args.token))
+    base_url = ""
+    for candidate in candidate_base_urls(args.base_url, args.username):
+        try:
+            repos = collect_repos(candidate, args.username, args.token)
+            base_url = candidate
+            break
+        except RuntimeError as error:
+            errors.append(str(error))
+
+    if not base_url:
+        raise RuntimeError("Could not read Gitea repositories. " + " ".join(errors))
 
     unique_repos = {}
     for repo in repos:
@@ -137,8 +207,15 @@ def main():
     data["projects"] = sorted(by_slug.values(), key=lambda project: project.get("priority", 999))
     data["updated_at"] = datetime.now(timezone.utc).date().isoformat()
     DATA_PATH.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    print(f"Imported {len(unique_repos)} Gitea repositories into {DATA_PATH.relative_to(ROOT)}")
+    print(
+        f"Imported {len(unique_repos)} Gitea repositories from {base_url} "
+        f"into {DATA_PATH.relative_to(ROOT)}"
+    )
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as error:
+        print(f"Error: {error}", file=sys.stderr)
+        raise SystemExit(1)
