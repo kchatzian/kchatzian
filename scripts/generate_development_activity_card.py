@@ -5,8 +5,8 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA_PATH = ROOT / "data" / "github-activity.json"
-SVG_PATH = ROOT / "assets" / "github-activity.svg"
+DATA_PATH = ROOT / "data" / "gitea-activity.json"
+SVG_PATH = ROOT / "assets" / "development-activity.svg"
 
 
 def esc(value):
@@ -105,6 +105,8 @@ source_labels = {
     "github_graphql": "GitHub API",
     "github_public_search": "GitHub public commit search",
     "local_git_preview": "local preview",
+    "zone01_gitea_api": "Zone01 Gitea API",
+    "zone01_gitea_pending": "waiting for Gitea token",
 }
 source_label = source_labels.get(data.get("source"), data.get("source", "unknown"))
 
@@ -189,7 +191,7 @@ svg = f'''<svg width="1200" height="620" viewBox="0 0 1200 620" fill="none" xmln
   <rect width="1200" height="620" rx="22" fill="url(#grid)" opacity="0.18"/>
   <path d="M74 460C204 390 326 415 468 376C624 334 734 232 874 214C984 200 1062 232 1130 270" stroke="url(#accent)" stroke-width="2" opacity="0.42"/>
 
-  <text x="64" y="68" fill="#E5E7EB" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="34" font-weight="800">GitHub Activity Timeline</text>
+  <text x="64" y="68" fill="#E5E7EB" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="34" font-weight="800">Zone01 Development Timeline</text>
   <text x="64" y="101" fill="#94A3B8" font-family="JetBrains Mono, Consolas, monospace" font-size="16">
     {esc(data["start_date"])} - {esc(data["end_date"])} • {period_days} days • source: {esc(source_label)} • updated {esc(data["updated_at"])}
   </text>
@@ -201,18 +203,18 @@ svg = f'''<svg width="1200" height="620" viewBox="0 0 1200 620" fill="none" xmln
   </g>
   <g transform="translate(338 126)">
     <rect width="254" height="72" rx="14" fill="#111827" stroke="#2A3A4D"/>
-    <text x="22" y="28" fill="#94A3B8" font-family="JetBrains Mono, Consolas, monospace" font-size="14">Activity days</text>
-    <text x="22" y="58" fill="#00C2A8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="30" font-weight="800">{fmt_int(data.get("active_days", 0))}</text>
+    <text x="22" y="28" fill="#94A3B8" font-family="JetBrains Mono, Consolas, monospace" font-size="14">Push days</text>
+    <text x="22" y="58" fill="#00C2A8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="30" font-weight="800">{fmt_int(data.get("push_days", data.get("active_days", 0)))}</text>
   </g>
   <g transform="translate(612 126)">
     <rect width="254" height="72" rx="14" fill="#111827" stroke="#2A3A4D"/>
-    <text x="22" y="28" fill="#94A3B8" font-family="JetBrains Mono, Consolas, monospace" font-size="14">Best streak</text>
-    <text x="22" y="58" fill="#A78BFA" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="30" font-weight="800">{fmt_int(data.get("best_streak", 0))} days</text>
+    <text x="22" y="28" fill="#94A3B8" font-family="JetBrains Mono, Consolas, monospace" font-size="14">Active days</text>
+    <text x="22" y="58" fill="#00C2A8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="30" font-weight="800">{fmt_int(data.get("active_days", 0))}</text>
   </g>
   <g transform="translate(886 126)">
     <rect width="250" height="72" rx="14" fill="#111827" stroke="#2A3A4D"/>
-    <text x="22" y="28" fill="#94A3B8" font-family="JetBrains Mono, Consolas, monospace" font-size="14">Contributions</text>
-    <text x="22" y="58" fill="#38BDF8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="30" font-weight="800">{fmt_int(data.get("total_contributions", 0))}</text>
+    <text x="22" y="28" fill="#94A3B8" font-family="JetBrains Mono, Consolas, monospace" font-size="14">Repos with commits</text>
+    <text x="22" y="58" fill="#38BDF8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="30" font-weight="800">{fmt_int(data.get("repositories_with_commits", len(data.get("repositories", []))))}</text>
   </g>
 
   {month_text}
@@ -224,10 +226,10 @@ svg = f'''<svg width="1200" height="620" viewBox="0 0 1200 620" fill="none" xmln
     {''.join(bars)}
     <polyline points="{polyline}" fill="none" stroke="url(#accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
-  <text x="64" y="462" fill="#94A3B8" font-family="JetBrains Mono, Consolas, monospace" font-size="14">Top repositories by commit contributions</text>
+  <text x="64" y="462" fill="#94A3B8" font-family="JetBrains Mono, Consolas, monospace" font-size="14">Top Zone01 repositories by commits</text>
   {''.join(repo_items)}
   <text x="64" y="590" fill="#64748B" font-family="JetBrains Mono, Consolas, monospace" font-size="13">
-    Activity days represent days with recorded GitHub contribution activity; private contributions appear only when GitHub exposes them to the token.
+    Push days are inferred from unique repository/day commit activity in Gitea; exact push events are not exposed by the repository commit API.
   </text>
 </svg>
 '''

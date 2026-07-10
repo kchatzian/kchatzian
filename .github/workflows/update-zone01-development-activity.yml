@@ -1,0 +1,47 @@
+name: Update Zone01 Development Activity Card
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "31 6 * * *"
+  push:
+    paths:
+      - scripts/fetch_gitea_activity.py
+      - scripts/generate_development_activity_card.py
+      - data/gitea-activity.json
+
+permissions:
+  contents: write
+
+jobs:
+  update-activity:
+    runs-on: ubuntu-latest
+    env:
+      GITEA_BASE_URL: https://platform.zone01.gr/git
+      GITEA_USERNAME: kchatzian
+      GITEA_TOKEN: ${{ secrets.GITEA_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Require Gitea token
+        if: ${{ env.GITEA_TOKEN == '' }}
+        run: |
+          echo "::warning::Missing repository secret GITEA_TOKEN. Add a Zone01 Gitea access token so the workflow can read private project activity."
+          exit 0
+
+      - name: Fetch Zone01 Gitea activity
+        if: ${{ env.GITEA_TOKEN != '' }}
+        run: python3 scripts/fetch_gitea_activity.py
+
+      - name: Generate activity card
+        if: ${{ env.GITEA_TOKEN != '' }}
+        run: python3 scripts/generate_development_activity_card.py
+
+      - name: Commit generated activity
+        if: ${{ env.GITEA_TOKEN != '' }}
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Update Zone01 development activity card
+          file_pattern: data/gitea-activity.json assets/development-activity.svg

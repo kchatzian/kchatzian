@@ -113,13 +113,13 @@ mindmap
       Intelligent Automation
 ```
 
-## GitHub Activity
+## Zone01 Development Activity
 
 <div align="center">
-  <img src="./assets/github-activity.svg" alt="GitHub commit and contribution activity timeline" width="100%" />
+  <img src="./assets/development-activity.svg" alt="Zone01 Gitea commit and push activity timeline" width="100%" />
 </div>
 
-This timeline is generated from GitHub contribution data starting from my Zone01 entry date. It tracks commit frequency, active coding days, streaks, and repository contribution weight automatically.
+This timeline is generated from Zone01 Gitea repositories starting from my school entry date. It tracks commit frequency, active days, inferred push days, and repository contribution weight automatically.
 
 <!-- portfolio-projects:start -->
 ## Selected Projects

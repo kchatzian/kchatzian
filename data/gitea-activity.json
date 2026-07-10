@@ -1,16 +1,19 @@
 {
   "username": "kchatzian",
-  "name": "Konstantinos Chatzianastasiou",
-  "source": "github_graphql",
+  "name": "kchatzian",
+  "source": "zone01_gitea_pending",
+  "base_url": "https://platform.zone01.gr/git",
   "start_date": "2026-01-07",
   "end_date": "2026-07-10",
   "updated_at": "2026-07-10",
-  "total_commits": 20,
-  "total_contributions": 22,
-  "restricted_contributions": 0,
-  "active_days": 3,
-  "current_streak": 1,
-  "best_streak": 1,
+  "total_commits": 0,
+  "total_contributions": 0,
+  "active_days": 0,
+  "push_days": 0,
+  "current_streak": 0,
+  "best_streak": 0,
+  "repositories_scanned": 0,
+  "repositories_with_commits": 0,
   "daily": [
     {
       "date": "2026-01-07",
@@ -670,7 +673,7 @@
     },
     {
       "date": "2026-06-20",
-      "count": 1
+      "count": 0
     },
     {
       "date": "2026-06-21",
@@ -702,7 +705,7 @@
     },
     {
       "date": "2026-06-28",
-      "count": 7
+      "count": 0
     },
     {
       "date": "2026-06-29",
@@ -750,14 +753,8 @@
     },
     {
       "date": "2026-07-10",
-      "count": 14
+      "count": 0
     }
   ],
-  "repositories": [
-    {
-      "name": "kchatzian/kchatzian",
-      "url": "https://github.com/kchatzian/kchatzian",
-      "commits": 20
-    }
-  ]
+  "repositories": []
 }
