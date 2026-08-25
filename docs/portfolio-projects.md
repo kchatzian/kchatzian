@@ -67,13 +67,13 @@ The dashboard reads `data/portfolio-projects.json` and exposes these controls:
 | `visibility` | `featured`, `selected`, `candidate`, or `future-featured`. |
 | `priority` | Sort order in public outputs. |
 
-Use `Import from Gitea` to fill repository URLs automatically from the Gitea profile/API. Add a token in the dashboard form when you need private repositories or team repositories owned by collaborators. The token is used for that request and is not saved to the repository.
+Use `Import from Gitea` only when you intentionally want a one-time local import from the Gitea profile/API. Add a token in the dashboard form when you need private repositories or team repositories owned by collaborators. The token is used for that request and is not saved to the repository.
 
 For Zone01 Gitea, the token is required even when the profile is visible in the browser. Create it from the Gitea web UI under user settings/applications/access tokens, then paste it into the dashboard `Token` field for the import.
 
 The importer adds all imported Gitea repositories to the dashboard table as candidates. They stay hidden from the public profile until `show_on_profile` is checked.
 
-After editing the dashboard, use `Save + Regenerate` to update local files only. Use `Publish to GitHub` to save, regenerate, commit, and push the profile changes automatically. The generator command is:
+After editing the dashboard, use `Save + Regenerate` to update local files only. Use `Publish to GitHub` only for an intentional manual publish. The generator command is:
 
 ```bash
 python3 scripts/generate_portfolio_section.py

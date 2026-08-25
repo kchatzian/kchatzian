@@ -63,7 +63,7 @@ konstantinos := Developer{
   <img src="./assets/zone01-progress.svg" alt="Zone01 progress snapshot" width="100%" />
 </div>
 
-This section is designed to evolve with my school progress. The current snapshot is generated from [`data/zone01.json`](./data/zone01.json), so it can be updated without rewriting the README.
+This section is a static snapshot from [`data/zone01.json`](./data/zone01.json) and the checked-in SVG asset. It does not run scheduled updates or fetch data from Zone01 automatically.
 
 ## Tech Stack
 
@@ -119,7 +119,7 @@ mindmap
   <img src="./assets/development-activity.svg" alt="Zone01 Gitea commit and push activity timeline" width="100%" />
 </div>
 
-This timeline is generated from Zone01 Gitea repositories starting from my school entry date. It tracks commit frequency, active days, inferred push days, and repository contribution weight automatically.
+This timeline is a static checked-in snapshot from [`data/gitea-activity.json`](./data/gitea-activity.json). It is kept as-is until I choose to update it manually.
 
 <!-- portfolio-projects:start -->
 ## Selected Projects
