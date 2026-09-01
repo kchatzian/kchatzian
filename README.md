@@ -1,69 +1,73 @@
 # Konstantinos Chatzianastasiou
 
-**Software Engineering Student | Backend Development | Go | Java | Linux | Automation**
+**Software Engineering Student | Backend & Systems-Oriented Development**
 
-Athens, Greece
+Athens, Greece | Zone01 Athens
 
-GitHub: [kchatzian](https://github.com/kchatzian)
+[![Go](https://img.shields.io/badge/Go-00ADD8?style=flat-square&logo=go&logoColor=white)](https://go.dev/)
+[![Java](https://img.shields.io/badge/Java-007396?style=flat-square&logo=openjdk&logoColor=white)](https://www.java.com/)
+[![Linux](https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=111111)](https://www.linux.org/)
+[![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)](https://git-scm.com/)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Bash](https://img.shields.io/badge/Bash-4EAA25?style=flat-square&logo=gnubash&logoColor=white)](https://www.gnu.org/software/bash/)
 
-I am a software engineering student at Zone01 Athens, focused on backend development, systems thinking, and practical problem solving. My technical background started in electrical and automation work, where reliability, troubleshooting, and clear diagnosis matter in real environments. I now apply that same mindset to software.
+I am a software engineering student at **Zone01 Athens**, focused on backend development, Linux-based workflows, and systems thinking. My background in electrical systems and automation shaped a practical engineering approach: understand the system, isolate the problem, verify assumptions, and build reliable solutions.
 
-## About
+I am developing toward backend and systems-oriented software engineering through project-based work in Go, Java, Linux, networking, algorithms, and collaborative code review.
 
-I am developing toward professional backend and systems-oriented software engineering, with a focus on writing clear, maintainable, and predictable code.
+## Featured Projects
 
-Before moving deeper into software, I worked with electrical systems, automation, and hands-on technical troubleshooting. That experience shaped how I approach engineering: understand the system, isolate the problem, verify assumptions, and prefer practical solutions over unnecessary complexity.
+| Project | Focus |
+| --- | --- |
+| [forum](https://github.com/kchatzian/forum) | Backend web application work around users, posts, sessions, data flow, and HTTP behavior. |
+| [lem-in](https://github.com/kchatzian/lem-in) | Graph traversal, pathfinding, algorithmic thinking, and performance-conscious problem solving. |
+| [net-cat](https://github.com/kchatzian/net-cat) | Networking fundamentals, TCP server behavior, concurrency, and terminal-based communication. |
+| [push-swap](https://github.com/kchatzian/push-swap) | Sorting strategy, stack operations, algorithm design, and optimization under constraints. |
+| [codex-learning-system-public](https://github.com/kchatzian/codex-learning-system-public) | Personal learning system for organizing software engineering practice and review workflows. |
+| [ascii-art-color](https://github.com/kchatzian/ascii-art-color) | CLI-oriented text processing, parsing, color output, and input validation. |
 
-Through Zone01 Athens, I am building stronger foundations in programming, algorithms, Linux, networking, collaboration, and project-based software delivery.
+These projects are presented as learning and portfolio work, not as completed professional products.
 
-## Technical Skills
+## Skills
 
-- **Languages:** Go, Java, Bash / Shell
-- **Backend:** HTTP fundamentals, APIs, service-oriented thinking, error handling
-- **Systems:** Linux, command-line tooling, processes, networking basics
-- **Tools:** Git, GitHub, Docker basics
-- **Core practice:** debugging, testing, documentation, automation, code review
+**Languages:** Go, Java, Bash / Shell
+
+**Backend:** HTTP fundamentals, API design basics, server behavior, error handling, data flow
+
+**Systems:** Linux, command-line tooling, processes, networking fundamentals
+
+**Tools:** Git, GitHub, Docker basics, terminal workflows
+
+**Engineering practice:** debugging, testing, documentation, code review, automation, maintainability
 
 ## Zone01 Athens
 
 Zone01 Athens is a project-based software engineering program focused on peer learning, independent problem solving, and building software from first principles.
 
-My current work there strengthens:
+Through Zone01, I am strengthening:
 
 - algorithmic thinking and data structures
 - backend-oriented programming in Go and Java
 - Linux and shell fluency
 - networking and systems fundamentals
-- collaboration through reviews, iterations, and clear communication
-
-## Selected Projects / Work in Progress
-
-I am currently building and refining learning projects through Zone01 Athens and personal practice. I prefer to present work accurately, so the items below are listed as active or selected learning work rather than completed professional products.
-
-- **Forum project** - backend-focused web application work involving users, posts, data flow, and HTTP behavior.
-- **codex-learning-system** - personal learning and organization work around software engineering practice.
-- **Go exercises** - programming fundamentals, algorithms, file handling, error handling, and command-line problem solving.
-- **Backend exercises** - practice around APIs, server behavior, data modeling, and maintainable application structure.
-- **Linux and automation practice** - shell usage, repeatable workflows, and practical tooling.
+- collaboration through reviews, iteration, and clear communication
 
 ## Engineering Mindset
 
-I value software that is understandable, testable, and useful in real operating conditions. My approach is shaped by both software training and practical technical field experience.
+I value software that is clear, testable, and useful in real operating conditions. My approach is shaped by both software training and hands-on technical troubleshooting.
 
-- Start by understanding the system and the constraints.
-- Make behavior explicit and easy to reason about.
+- Understand the system before changing it.
 - Prefer simple designs that can be tested and maintained.
+- Make behavior explicit and easy to reason about.
 - Debug from evidence, not guesses.
-- Document decisions when they help future work.
-- Treat reliability and clarity as engineering requirements, not extras.
+- Treat reliability, clarity, and documentation as part of the work.
 
-## Current Goals
+## Current Focus
 
-- Build stronger backend projects in Go and Java.
-- Improve my understanding of networking, databases, and service design.
-- Practice testing, documentation, and code review as normal parts of delivery.
-- Prepare a clear portfolio of reviewed, well-documented projects.
-- Grow into backend or systems-oriented software engineering work.
+- Building stronger backend projects in Go and Java
+- Improving networking, databases, and service design fundamentals
+- Practicing testing, documentation, and review-driven development
+- Preparing a clear portfolio of reviewed, well-documented projects
 
 ## Contact
 
