@@ -1,7 +1,9 @@
 # Konstantinos Chatzianastasiou
 
-**Software Engineering Student | Backend Development | Go | Java | Linux | Automation**  
-Athens, Greece  
+**Software Engineering Student | Backend Development | Go | Java | Linux | Automation**
+
+Athens, Greece
+
 GitHub: [kchatzian](https://github.com/kchatzian)
 
 I am a software engineering student at Zone01 Athens, focused on backend development, systems thinking, and practical problem solving. My technical background started in electrical and automation work, where reliability, troubleshooting, and clear diagnosis matter in real environments. I now apply that same mindset to software.
